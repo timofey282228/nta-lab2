@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "nta-lab2"
+version = "0.1.0"
+description = ""
+authors = ["timofey282228 <tymopod-ipt25@lll.kpi.ua>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+nta-lab1 = {path = "../../nta-lab1"}
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
