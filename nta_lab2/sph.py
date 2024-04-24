@@ -6,7 +6,7 @@ from nta_lab1.miller_rabin import miller_rabin_test
 from .D1IntArray import D1IntArray
 
 
-def calc_modppowl(a, b, p, pi, l, table: dict[int, int]):
+def _calc_x(a, b, p, pi, l, table: dict[int, int]):
     x = D1IntArray.zeros(l)
     n = p - 1
 
@@ -26,7 +26,7 @@ def calc_modppowl(a, b, p, pi, l, table: dict[int, int]):
     return cx % n
 
 
-def crt(x, pi, li, nn):
+def _crt(x, pi, li, nn):
     m = D1IntArray.zeros(len(x))
     n = D1IntArray.zeros(len(x))
 
@@ -50,8 +50,8 @@ def silver_pohlig_hellman(a, b, p, *, pt_iters=10):
 
     x = D1IntArray.zeros(len(n_canon))
     for i, (pi, li) in enumerate(n_canon.items()):
-        x[i] = calc_modppowl(a, b, p, pi, li, r_tables[i])
+        x[i] = _calc_x(a, b, p, pi, li, r_tables[i])
 
-    solution = crt(x, D1IntArray(n_canon.keys()), D1IntArray(n_canon.values()), n) % n
+    solution = _crt(x, D1IntArray(n_canon.keys()), D1IntArray(n_canon.values()), n) % n
 
     return solution % n

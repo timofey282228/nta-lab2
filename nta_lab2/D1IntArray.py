@@ -58,12 +58,11 @@ class D1IntArray(list):
             return sum(self) % m
 
     def prod(self, m=None):
+        acc = 1
         if m is None:
-            acc = 1
             for e in self:
                 acc *= e
         else:
-            acc = 1
             for e in self:
                 acc = (acc * e) % m
 
