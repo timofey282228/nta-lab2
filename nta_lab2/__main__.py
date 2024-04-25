@@ -1,6 +1,7 @@
 import argparse
 import os
 import signal
+import time
 from datetime import datetime
 from queue import Empty
 from time import sleep
@@ -9,8 +10,8 @@ from ._task_interop import *
 from .bruteforce import bruteforce
 from .sph import silver_pohlig_hellman
 
-GET_TASK_DELAY = 1 #10 * 60
-GET_SOLUTION_DELAY = 1 # 5 * 60
+GET_TASK_DELAY = 10 * 60
+GET_SOLUTION_DELAY = 5 * 60
 
 
 def watchdog(initial_delay, update_queue: Queue):
@@ -55,7 +56,7 @@ def benchmark(args):
         w.start()
         r.start()
 
-        for j in range(1, 3):
+        for tp in range(1, 3):
 
             # set up a watchdog
             wdq = wd(GET_TASK_DELAY)
@@ -63,15 +64,26 @@ def benchmark(args):
             # get the task
             p = rq.get()
 
-            print("Task type {}:\n a = {}; b = {}; p = {}.".format(j, *p))
+            print("Task type {}:\n a = {}; b = {}; p = {}.".format(tp, *p))
             wdq.put(None)  # wd ok
 
             # solve it
-            wdq = wd(GET_TASK_DELAY)
+            wdq = wd(GET_SOLUTION_DELAY)
+
+            # we'll measure execution time
+            t = time.perf_counter_ns()
             x = algo(*p)
+            t = time.perf_counter_ns() - t
+
             assert pow(p[0], x, p[2]) == p[1], "WRONG"
             wdq.put(None)  # wd ok
             print(" Solution: x = {}\n".format(x))
+
+            # append stats
+            if args.o:
+                with open(args.o, "at") as f:
+                    f.write("{},{},{},{},{},{},{}\n".format(tp, l, p[0], p[1], p[2], x, t))
+
             # send the solution
             wq.put(x)
 
@@ -129,7 +141,7 @@ if __name__ == "__main__":
         "-l", help="minimum length", type=int, metavar="l", default=3
     )
     benchmark_parser.add_argument(
-        "-L", help="maximum length", type=int, metavar="L", default=10
+        "-L", help="maximum length", type=int, metavar="L", default=100
     )
 
     benchmark_parser.add_argument("-o", type=str, help="Path to CSV file for stats (will be appended)")
