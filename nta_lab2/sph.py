@@ -38,6 +38,8 @@ def _crt(x, pi, li, nn):
 
 
 def silver_pohlig_hellman(a, b, p, *, pt_iters=10):
+    if not a in range(1, p) or not b in range(1, p):
+        raise ValueError
     assert miller_rabin_test(p, pt_iters)
 
     n = p - 1
