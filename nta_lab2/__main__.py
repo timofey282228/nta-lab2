@@ -1,6 +1,7 @@
 import argparse
 import os
 import signal
+import subprocess
 import time
 from datetime import datetime
 from queue import Empty
@@ -42,6 +43,14 @@ def wd(delay):
 
 
 def benchmark(args):
+    rc = 0
+    try: rc = subprocess.run("docker --version", shell=True, capture_output = True).returncode
+    except FileNotFoundError: rc = -1
+    finally:
+        if rc:
+            logging.error("Can not run benchmark: docker not available")
+            exit(3)
+
     algo = args.algo
 
     for l in range(args.l, args.L):
@@ -135,7 +144,7 @@ if __name__ == "__main__":
 
     benchmark_parser = subps.add_parser(
         "benchmark",
-        help='Test the implementation with generated tasks (runs "docker run --rm -i salo1d/nta_cp2_helper:2.0" multiple times under the hood)',
+        help='Test the implementation with generated tasks (runs "docker run --rm -i salo1d/nta_cp2_helper:2.0" multiple times under the hood, so requires docker to be available in the execution environment)',
     )
     benchmark_parser.add_argument(
         "-l", help="minimum length", type=int, metavar="l", default=3

@@ -6,8 +6,8 @@ authors = ["timofey282228 <tymopod-ipt25@lll.kpi.ua>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
-nta-lab1 = {path = "../../nta-lab1"}
+python = "^3.11"
+nta-lab1 = {git = "https://github.com/timofey282228/nta-lab1.git"}
 
 
 [tool.poetry.group.dev.dependencies]

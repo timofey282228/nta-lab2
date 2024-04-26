@@ -2,6 +2,7 @@ import logging
 import re
 import subprocess
 import threading
+import time
 from queue import Queue
 
 TASK = re.compile(r".*^a = (\d+);\nb = (\d+);\np = (\d+)\.", re.MULTILINE | re.DOTALL)
@@ -41,6 +42,8 @@ def start_task():
         bufsize=0,
     )
 
+    if popen.poll():
+        raise RuntimeError("Could not start task generator: {}".format({popen.returncode}))
     return popen
 
 

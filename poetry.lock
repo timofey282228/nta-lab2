@@ -27,7 +27,7 @@ name = "nta-lab1"
 version = "0.1.0"
 description = ""
 optional = false
-python-versions = "^3.12"
+python-versions = "^3.11"
 files = []
 develop = false
 
@@ -35,8 +35,10 @@ develop = false
 numpy = "^1.26.4"
 
 [package.source]
-type = "directory"
-url = "../../nta-lab1"
+type = "git"
+url = "https://github.com/timofey282228/nta-lab1.git"
+reference = "HEAD"
+resolved_reference = "33d443e34f0e43283ca91ac0fa5b635d7a831951"
 
 [[package]]
 name = "numpy"
@@ -131,5 +133,5 @@ testing = ["argcomplete", "attrs (>=19.2)", "hypothesis (>=3.56)", "mock", "pygm
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.12"
-content-hash = "54c04ab3f8a5259470b29c21f99ba406663ae0c8157f28edc9d432e008ee3967"
+python-versions = "^3.11"
+content-hash = "59d6aa18c391efa4df62a472b67f2d1cea91db8e3a5928299b0c85ee05bc4cfd"
